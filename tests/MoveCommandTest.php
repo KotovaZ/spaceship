@@ -3,9 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . 'vendor/autoload.php';
 
 use App\Exceptions\UnexpectedValueException;
-use App\Move\MovableAdapter;
 use App\Move\MoveCommand;
-use App\GameObject;
 use App\Move\Movable;
 use App\Vector;
 use PHPUnit\Framework\MockObject\MockObject;
