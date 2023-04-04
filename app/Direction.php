@@ -13,6 +13,16 @@ class Direction
         $this->directionsNumber = $directionsNumber;
     }
 
+    public function getDirection(): int
+    {
+        return $this->direction;
+    }
+
+    public function getDirectionsNumber(): int
+    {
+        return $this->directionsNumber;
+    }
+
     public function getAngular(): int
     {
         return $this->direction / 360 * $this->directionsNumber;
