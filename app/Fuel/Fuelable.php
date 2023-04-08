@@ -5,6 +5,6 @@ namespace App\Fuel;
 interface Fuelable
 {
     public function getFuel(): int;
-    public function addFuel(int $dfuel): void;
+    public function setFuel(int $fuel): void;
     public function getSpendVelocity(): int;
 }
