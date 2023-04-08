@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\CommandException;
 use App\Interfaces\Command;
 
 class MacroCommand implements Command
@@ -13,7 +14,7 @@ class MacroCommand implements Command
      * @param Command[] $commands
      * @return void
      */
-    public function __construct(array $commands)
+    public function __construct(Command ...$commands)
     {
         $this->commands = $commands;
     }
@@ -21,7 +22,11 @@ class MacroCommand implements Command
     public function execute(): void
     {
         foreach ($this->commands as $command) {
-            $command->execute();
+            try {
+                $command->execute();
+            } catch (\Exception $e) {
+                throw new CommandException($e->getMessage(), 0, $e);
+            }
         }
     }
 }
