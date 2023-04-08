@@ -5,7 +5,6 @@ namespace App\Fuel;
 use App\Exceptions\CommandException;
 use App\Fuel\Fuelable;
 use App\Interfaces\Command;
-use App\Vector;
 
 class CheckFuelCommand implements Command
 {
