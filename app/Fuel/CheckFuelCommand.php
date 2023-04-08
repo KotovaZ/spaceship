@@ -15,9 +15,13 @@ class CheckFuelCommand implements Command
         $this->target = $target;
     }
 
+    /**
+     * @throws CommandException
+     * @return void
+     */
     public function execute(): void
     {
-        if ($this->target->getFuel() <= 0) {
+        if ($this->target->getFuel() < $this->target->getSpendVelocity()) {
             throw new CommandException("Недостаточно остатка топлива!");
         }
     }
