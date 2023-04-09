@@ -8,7 +8,7 @@ use App\Fuel\Fuelable;
 use App\Interfaces\Command;
 use App\MacroCommand;
 use App\Move\Movable;
-use App\Move\MoveCommand as MoveMoveCommand;
+use App\Move\MoveCommand;
 
 class MoveWithFuelCommand implements Command
 {
@@ -18,7 +18,7 @@ class MoveWithFuelCommand implements Command
     {
         $this->macroCommand = new MacroCommand(
             new CheckFuelCommand($fuelableTarget),
-            new MoveMoveCommand($movableTarget),
+            new MoveCommand($movableTarget),
             new BurnFuelCommand($fuelableTarget)
         );
     }
