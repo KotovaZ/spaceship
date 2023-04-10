@@ -5,11 +5,14 @@ namespace App;
 use App\Exceptions\CommandException;
 use App\Interfaces\Command;
 use App\Interfaces\ExceptionHandlerInterface;
+use Ds\Map;
 use Exception;
 
 class ExceptionHandler implements ExceptionHandlerInterface
 {
-    private array $dictionary = [];
+    public function __construct(private Map $dictionary)
+    {
+    }
 
     public function handle(Command $command, Exception $exception): void
     {
@@ -23,7 +26,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
 
     private function getHandler(Command $command, Exception $exception): ?Command
     {
-        $commandExceptions = $this->dictionary[$command::class];
-        return !empty($commandExceptions) ? $commandExceptions[$exception::class] : null;
+        $commandExceptions = $this->dictionary[$command];
+        return !empty($commandExceptions) ? $commandExceptions[$exception] : null;
     }
 }
