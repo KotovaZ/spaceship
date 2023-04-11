@@ -7,7 +7,7 @@ use App\Queue\CommandQueueInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class ExceptionHandler implements Command
+class LogExceptionHandler implements Command
 {
     public function __construct(
         private CommandQueueInterface $queue,
