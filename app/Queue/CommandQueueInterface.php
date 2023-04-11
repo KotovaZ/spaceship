@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Interfaces;
+namespace App\Queue;
+
+use App\Interfaces\Command;
 
 interface CommandQueueInterface
 {
