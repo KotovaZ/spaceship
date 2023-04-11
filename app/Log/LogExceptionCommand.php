@@ -6,7 +6,7 @@ use App\Interfaces\Command;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class WriteLogCommand implements Command
+class LogExceptionCommand implements Command
 {
     public function __construct(
         private Throwable $target,
