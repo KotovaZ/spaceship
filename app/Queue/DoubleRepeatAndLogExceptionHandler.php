@@ -3,11 +3,10 @@
 namespace App\Queue;
 
 use App\Interfaces\Command;
-use App\Log\LogExceptionCommand;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class RepeatAndLogExceptionHandler implements Command
+class DoubleRepeatAndLogExceptionHandler implements Command
 {
     public function __construct(
         private Throwable $exception,
@@ -18,11 +17,11 @@ class RepeatAndLogExceptionHandler implements Command
 
     public function execute(): void
     {
+        $doubleRepeatCommand = new DoubleRepeatCommand($this->targetCommand);
         try {
-            (new RepeatCommand($this->targetCommand))->execute();
+            $doubleRepeatCommand->execute();
         } catch (Throwable $e) {
-            (new LogExceptionCommand($this->exception, $this->logger))->execute();
-            throw $e;
+            (new RepeatAndLogExceptionHandler($e, $doubleRepeatCommand, $this->logger))->execute();
         }
     }
 }
