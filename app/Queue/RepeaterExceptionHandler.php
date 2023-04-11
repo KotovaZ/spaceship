@@ -15,6 +15,6 @@ class RepeaterExceptionHandler implements Command
 
     public function execute(): void
     {
-        $this->queue->push($this->target);
+        $this->queue->push(new RepeatCommand($this->target));
     }
 }
