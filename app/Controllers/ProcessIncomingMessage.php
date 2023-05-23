@@ -13,26 +13,21 @@ class ProcessIncomingMessage implements Controller
 {
     public function handle(IncommingMessage $message): void
     {
-        $gameId = $message->getGameId();
-
         /** @var SenderInterface $gameSender */
         $gameSender = IoC::resolve(
             'Game.Get',
-            $gameId
-        );
-        
-        $object = IoC::resolve(
-            "Game.$gameId.Objects.Get",
-            $message->getObjectId()
+            $message->getGameId()
         );
 
         /** @var Command $command */
-        $command = IoC::resolve(
-            "Command.Factory.Get",
+        $interpretCommand = IoC::resolve(
+            "Command.Interpret",
             $message->getCommandCode(),
-            $object
+            $message->getGameId(),
+            $message->getObjectId(),
+            $message->getParams()
         );
 
-        $gameSender->send($command);
+        $gameSender->send($interpretCommand);
     }
 }
