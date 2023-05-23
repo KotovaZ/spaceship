@@ -6,6 +6,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . 'app/Bootstrap.php';
 use Amp\Cancellation;
 use Amp\Sync\Channel;
 use App\Controllers\ProcessIncomingMessage;
+use App\Exceptions\Command\NotFoundException as CommandNotFoundException;
+use App\Exceptions\Game\Object\NotFoundException as ObjectNotFoundException;
 use App\Exceptions\NotFoundException;
 use App\Interfaces\Command;
 use App\Interfaces\IncommingMessage;
@@ -44,7 +46,7 @@ final class ProcessIncomingMessageControllerTest extends TestCase
         $message->method('getGameId')->willReturn(self::GAME_UID);
         $message->method('getObjectId')->willReturn("undefined_object_id");
 
-        $this->expectException(NotFoundException::class);
+        $this->expectException(ObjectNotFoundException::class);
         $controller = new ProcessIncomingMessage;
         $controller->handle($message);
         $this->proccessGame();
@@ -62,7 +64,7 @@ final class ProcessIncomingMessageControllerTest extends TestCase
         $movableMock = $this->createMock(Movable::class);
         IoC::resolve("Game." . self::GAME_UID . ".Objects.Register", "1", $movableMock);
 
-        $this->expectException(NotFoundException::class);
+        $this->expectException(CommandNotFoundException::class);
         $controller = new ProcessIncomingMessage;
         $controller->handle($message);
         $this->proccessGame();
@@ -89,7 +91,7 @@ final class ProcessIncomingMessageControllerTest extends TestCase
 
     private function proccessGame()
     {
-        $this->sender->send(new StopThreadCommand($this->thread));
+        $this->sender->send(new SoftStopThreadCommand($this->thread));
         $this->thread->run(
             $this->createMock(Channel::class),
             $this->createMock(Cancellation::class)
