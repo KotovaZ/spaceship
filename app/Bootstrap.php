@@ -2,6 +2,8 @@
 
 use App\Exceptions\Command\NotFoundException as CommandNotFoundException;
 use App\Exceptions\NotFoundException;
+use App\Field\Cell;
+use App\Interfaces\Cell as ICell;
 use App\Interfaces\Command;
 use App\Interfaces\SenderInterface;
 use App\Interfaces\UObject;
@@ -19,6 +21,7 @@ use App\Thread\Action\DefaultStrategy;
 use App\Thread\StartThreadCommand;
 use App\Thread\StopThreadCommand;
 use App\Thread\Thread;
+use App\Vector;
 
 IoC::resolve(
     'IoC.Register',
@@ -98,7 +101,7 @@ IoC::resolve(
             fn () => $gameObjects
         )->execute();
 
-        
+
         IoC::resolve(
             'IoC.Register',
             "Game.$uid.Players",
@@ -173,5 +176,56 @@ wQIDAQAB
 EOD;
 
         return new RS256($publicKey);
+    }
+)->execute();
+
+IoC::resolve(
+    'IoC.Register',
+    'Game.Field.Size',
+    fn () => [1024, 768]
+)->execute();
+
+
+IoC::resolve(
+    'IoC.Register',
+    'Game.Field.Size',
+    fn () => [1024, 768]
+)->execute();
+
+IoC::resolve(
+    'IoC.Register',
+    'Game.Field.Cell.Size',
+    fn () => [64, 64]
+)->execute();
+
+IoC::resolve(
+    'IoC.Register',
+    'Game.Field.Cells',
+    function () {
+        try {
+            return IoC::resolve('Game.Storage.Cells');
+        } catch (Throwable $e) {
+        }
+
+        list($fieldWidth, $fieldHeight) = IoC::resolve('Game.Field.Size');
+        list($cellWidth, $cellHeight) = IoC::resolve('Game.Field.Cell.Size');
+        $cells = [];
+        $x = $y = 0;
+
+        while (true) {
+            if ($x >= $fieldWidth) $x = 0;
+            if ($y >= $fieldHeight) break;
+
+            $cell = IoC::resolve('Adapter', ICell::class, new UObject);
+            $cell->setWidth($cellWidth);
+            $cell->setHeight($cellHeight);
+            $cell->setPosition(new Vector($x + $cellWidth / 2, $y + $cellHeight / 2));
+            $cells[] = $cell;
+
+            $x += $cellWidth;
+            $y += $cellHeight;
+        }
+
+        return $cells;
     }
 )->execute();
