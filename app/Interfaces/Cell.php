@@ -7,9 +7,9 @@ use App\Vector;
 interface Cell
 {
     function getWidth(): int;
-    function setWidth(int $width): void;
+    function setWidth(int $width);
     function getHeight(): int;
-    function setHeight(int $height): void;
+    function setHeight(int $height);
     function getPosition(): Vector;
-    function setPosition(Vector $position): void;
+    function setPosition(Vector $position);
 }

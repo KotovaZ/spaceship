@@ -43,7 +43,7 @@ final class DefineObjectCellCommandTest extends TestCase
 
     public function testObjectOutOfField()
     {
-        $gridKey = 'BASE';
+        $gridKey = 'TEST';
         $objectUid = "2";
 
         /** @var Movable&MockObject $movableMock */
